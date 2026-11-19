@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-lg navbar-lb sticky-top" aria-label="Navegación principal">
+  <div class="container">
+    <a class="navbar-brand fs-5" href="/">💧 Lágrimas Blancas</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir menú">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link <%= currentPath === '/' ? 'active' : '' %>" href="/">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link <%= currentPath.startsWith('/campanas') ? 'active' : '' %>" href="/campanas">Campañas</a></li>
+        <li class="nav-item"><a class="nav-link <%= currentPath.startsWith('/comunicados') ? 'active' : '' %>" href="/comunicados">Comunicados</a></li>
+        <% if (user) { %>
+          <li class="nav-item"><a class="nav-link <%= currentPath.startsWith('/admin') ? 'active' : '' %>" href="/admin">Panel admin</a></li>
+        <% } %>
+      </ul>
+      <div class="d-flex flex-wrap gap-2 align-items-center">
+        <a class="btn btn-cta btn-sm" href="/donar">Donar</a>
+        <a class="btn btn-cta btn-sm" href="/voluntariado">Ser voluntario</a>
+        <% if (user) { %>
+          <form method="post" action="/logout" class="d-inline">
+            <%- include('csrf') %>
+            <button class="btn btn-outline-light btn-sm" type="submit">Salir (<%= user.name %>)</button>
+          </form>
+        <% } else { %>
+          <a class="btn btn-outline-light btn-sm" href="/login">Ingresar</a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</nav>

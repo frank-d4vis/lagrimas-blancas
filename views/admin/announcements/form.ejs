@@ -1,0 +1,30 @@
+<%- include('../../partials/header', { title: title }) %>
+<section class="container py-5">
+  <div class="row justify-content-center"><div class="col-lg-8">
+    <h1 class="h2 section-title"><%= title %></h1>
+    <%- include('../../partials/errors') %>
+    <form method="post" action="<%= action %>" novalidate>
+      <%- include('../../partials/csrf') %>
+      <% if (item.id) { %><input type="hidden" name="_method" value="PUT"><% } %>
+      <div class="mb-3">
+        <label for="title" class="form-label">Título *</label>
+        <input class="form-control" id="title" name="title" maxlength="150" required value="<%= item.title %>">
+      </div>
+      <div class="mb-3">
+        <label for="category" class="form-label">Categoría *</label>
+        <select class="form-select" id="category" name="category">
+          <% categories.forEach(function (c) { %>
+            <option value="<%= c %>" <%= item.category === c ? 'selected' : '' %>><%= c %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label for="content" class="form-label">Contenido *</label>
+        <textarea class="form-control" id="content" name="content" rows="7" maxlength="5000" required><%= item.content %></textarea>
+      </div>
+      <button class="btn btn-lb" type="submit">Guardar</button>
+      <a class="btn btn-outline-secondary" href="/admin/comunicados">Cancelar</a>
+    </form>
+  </div></div>
+</section>
+<%- include('../../partials/footer') %>

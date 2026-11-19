@@ -1,0 +1,48 @@
+:root {
+  --lb-teal: #008B8B;
+  --lb-teal-dark: #006d6d;
+  --lb-magenta: #C71585;
+  --lb-magenta-dark: #a21069;
+  --lb-gray: #F8F9FA;
+}
+body { background: #fff; color: #212529; }
+main { min-height: 65vh; }
+.bg-lb-teal { background-color: var(--lb-teal) !important; color: #fff; }
+.text-lb { color: var(--lb-teal) !important; }
+.bg-lb-gray { background-color: var(--lb-gray); }
+.navbar-lb { background-color: var(--lb-teal); font-weight: 600; }
+.navbar-lb .nav-link, .navbar-lb .navbar-brand { color: #fff; }
+.navbar-lb .nav-link:hover, .navbar-lb .nav-link.active { text-decoration: underline; text-underline-offset: 6px; }
+.navbar-lb .navbar-toggler { border-color: rgba(255,255,255,.7); }
+.navbar-lb .navbar-toggler-icon { filter: invert(1); }
+
+.btn-cta { background-color: var(--lb-magenta); border-color: var(--lb-magenta); color: #fff; font-weight: 600; }
+.btn-cta:hover, .btn-cta:focus { background-color: var(--lb-magenta-dark); border-color: var(--lb-magenta-dark); color: #fff; }
+.btn-lb { background-color: var(--lb-teal); border-color: var(--lb-teal); color: #fff; }
+.btn-lb:hover, .btn-lb:focus { background-color: var(--lb-teal-dark); border-color: var(--lb-teal-dark); color: #fff; }
+.btn-outline-lb { color: var(--lb-teal); border-color: var(--lb-teal); }
+.btn-outline-lb:hover, .btn-outline-lb.active { background: var(--lb-teal); color: #fff; }
+
+a { color: var(--lb-teal-dark); }
+:focus-visible { outline: 3px solid var(--lb-magenta); outline-offset: 2px; }
+
+.hero { background: linear-gradient(135deg, var(--lb-teal) 0%, #006d6d 100%); color: #fff; }
+.hero h1 { font-weight: 700; }
+.section-title { color: var(--lb-teal); border-bottom: 3px solid var(--lb-teal); display: inline-block; padding-bottom: .25rem; margin-bottom: 1.25rem; }
+.card-lb { border: 0; border-top: 4px solid var(--lb-teal); box-shadow: 0 2px 10px rgba(0,0,0,.07); height: 100%; }
+.card-lb img { aspect-ratio: 16 / 9; object-fit: cover; }
+.preline { white-space: pre-line; }
+
+/* Barra de progreso accesible (<progress>, compatible con CSP sin estilos inline) */
+.lb-progress { width: 100%; height: 14px; appearance: none; -webkit-appearance: none; border: 0; border-radius: 8px; background: #e9ecef; overflow: hidden; }
+.lb-progress::-webkit-progress-bar { background: #e9ecef; border-radius: 8px; }
+.lb-progress::-webkit-progress-value { background: var(--lb-teal); border-radius: 8px; }
+.lb-progress::-moz-progress-bar { background: var(--lb-teal); border-radius: 8px; }
+.lb-progress.done::-webkit-progress-value { background: var(--lb-magenta); }
+.lb-progress.done::-moz-progress-bar { background: var(--lb-magenta); }
+
+.donation-box { border: 2px dashed var(--lb-teal); border-radius: .75rem; background: #fff; }
+.qr-img { max-width: 220px; width: 100%; height: auto; }
+footer.site-footer { background: var(--lb-teal); color: #fff; }
+footer.site-footer a { color: #fff; }
+.table thead th { background: var(--lb-teal); color: #fff; white-space: nowrap; }

@@ -1,0 +1,44 @@
+<%- include('../../partials/header', { title: title }) %>
+<section class="container py-5">
+  <div class="row justify-content-center"><div class="col-lg-8">
+    <h1 class="h2 section-title"><%= title %></h1>
+    <%- include('../../partials/errors') %>
+    <form method="post" action="<%= action %>" novalidate>
+      <%- include('../../partials/csrf') %>
+      <% if (campaign.id) { %><input type="hidden" name="_method" value="PUT"><% } %>
+      <div class="mb-3">
+        <label for="title" class="form-label">Título *</label>
+        <input class="form-control" id="title" name="title" maxlength="150" required value="<%= campaign.title %>">
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Descripción *</label>
+        <textarea class="form-control" id="description" name="description" rows="5" maxlength="3000" required><%= campaign.description %></textarea>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="goal_amount" class="form-label">Meta (S/) *</label>
+          <input type="number" step="0.01" min="1" class="form-control" id="goal_amount" name="goal_amount" required value="<%= campaign.goal_amount %>">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="current_amount" class="form-label">Monto recaudado (S/) *</label>
+          <input type="number" step="0.01" min="0" class="form-control" id="current_amount" name="current_amount" required value="<%= campaign.current_amount %>">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="image_url" class="form-label">URL de la imagen (https://…)</label>
+        <input type="url" class="form-control" id="image_url" name="image_url" maxlength="500" value="<%= campaign.image_url || '' %>">
+        <div class="form-text">Se usan URLs externas para no depender del disco efímero de Render/Vercel.</div>
+      </div>
+      <div class="mb-4">
+        <label for="status" class="form-label">Estado *</label>
+        <select class="form-select" id="status" name="status">
+          <option value="active" <%= campaign.status === 'active' ? 'selected' : '' %>>Activa</option>
+          <option value="completed" <%= campaign.status === 'completed' ? 'selected' : '' %>>Completada</option>
+        </select>
+      </div>
+      <button class="btn btn-lb" type="submit">Guardar</button>
+      <a class="btn btn-outline-secondary" href="/admin/campanas">Cancelar</a>
+    </form>
+  </div></div>
+</section>
+<%- include('../../partials/footer') %>

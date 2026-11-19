@@ -1,0 +1,20 @@
+<%- include('partials/header', { title: title }) %>
+<section class="container py-5">
+  <h1 class="h2 section-title"><%= archive ? 'Archivo de campañas completadas' : 'Campañas de ayuda activas' %></h1>
+  <p class="text-muted">
+    <%= archive ? 'Transparencia ante todo: aquí puedes ver las campañas que ya alcanzaron su objetivo gracias a la comunidad.' : 'Elige una campaña y ayúdanos a llegar a la meta. Cada aporte se refleja en la barra de avance.' %>
+  </p>
+  <div class="mb-4 d-flex gap-2 flex-wrap">
+    <a class="btn btn-outline-lb <%= archive ? '' : 'active' %>" href="/campanas">Activas</a>
+    <a class="btn btn-outline-lb <%= archive ? 'active' : '' %>" href="/campanas/archivo">Completadas</a>
+  </div>
+  <% if (campaigns.length === 0) { %>
+    <div class="alert alert-info">No hay campañas en esta sección por el momento.</div>
+  <% } %>
+  <div class="row g-4">
+    <% campaigns.forEach(function (c) { %>
+      <div class="col-12 col-md-6 col-lg-4"><%- include('partials/campaign-card', { c: c }) %></div>
+    <% }) %>
+  </div>
+</section>
+<%- include('partials/footer') %>

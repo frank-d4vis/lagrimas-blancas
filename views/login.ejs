@@ -1,0 +1,26 @@
+<%- include('partials/header', { title: 'Ingresar' }) %>
+<section class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card card-lb">
+        <div class="card-body p-4">
+          <h1 class="h3 text-lb mb-3">Acceso del equipo administrador</h1>
+          <%- include('partials/errors') %>
+          <form method="post" action="/login" novalidate>
+            <%- include('partials/csrf') %>
+            <div class="mb-3">
+              <label for="email" class="form-label">Correo</label>
+              <input type="email" class="form-control" id="email" name="email" required autocomplete="username" value="<%= old.email || '' %>">
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña</label>
+              <input type="password" class="form-control" id="password" name="password" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn btn-lb w-100">Ingresar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<%- include('partials/footer') %>

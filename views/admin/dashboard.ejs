@@ -1,0 +1,32 @@
+<%- include('../partials/header', { title: 'Panel de administración' }) %>
+<section class="container py-5">
+  <h1 class="h2 section-title">Panel de administración</h1>
+  <p>Sesión iniciada como <strong><%= user.name %></strong> (<%= user.role %>).</p>
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card card-lb"><div class="card-body">
+        <h2 class="h5 text-lb">Campañas</h2>
+        <p class="mb-1">Activas: <strong><%= campaigns.active || 0 %></strong></p>
+        <p>Completadas: <strong><%= campaigns.completed || 0 %></strong></p>
+        <a class="btn btn-lb btn-sm" href="/admin/campanas">Gestionar</a>
+      </div></div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-lb"><div class="card-body">
+        <h2 class="h5 text-lb">Comunicados</h2>
+        <p>Publicados: <strong><%= announcements %></strong></p>
+        <a class="btn btn-lb btn-sm" href="/admin/comunicados">Gestionar</a>
+      </div></div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-lb"><div class="card-body">
+        <h2 class="h5 text-lb">Voluntariado</h2>
+        <p class="mb-1">Pendientes: <strong><%= volunteers.pending || 0 %></strong></p>
+        <p class="mb-1">Contactados: <strong><%= volunteers.contacted || 0 %></strong></p>
+        <p>Aprobados: <strong><%= volunteers.approved || 0 %></strong></p>
+        <a class="btn btn-lb btn-sm" href="/admin/voluntarios">Gestionar</a>
+      </div></div>
+    </div>
+  </div>
+</section>
+<%- include('../partials/footer') %>

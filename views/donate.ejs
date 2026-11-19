@@ -1,0 +1,44 @@
+<%- include('partials/header', { title: 'Donar' }) %>
+<section class="container py-5">
+  <h1 class="h2 section-title">Canales oficiales de donación</h1>
+  <div class="alert alert-warning" role="alert">
+    <strong>Dona con confianza:</strong> estos son los <u>únicos</u> canales oficiales de la ONG. Verifica que el titular sea
+    <strong><%= donation.holder %></strong> (RUC <%= donation.ruc %>). Nunca te pediremos claves ni códigos por llamada o mensaje.
+  </div>
+
+  <h2 class="h4 text-lb mt-4">Cuentas bancarias institucionales</h2>
+  <div class="row g-3">
+    <% donation.banks.forEach(function (b) { %>
+      <div class="col-md-4">
+        <div class="donation-box p-3 h-100">
+          <h3 class="h5 mb-1"><%= b.bank %></h3>
+          <p class="small text-muted mb-2"><%= b.type %></p>
+          <p class="mb-1"><strong>N.° de cuenta:</strong><br><%= b.number %></p>
+          <p class="mb-1"><strong>CCI:</strong><br><%= b.cci %></p>
+          <p class="mb-0 small"><strong>Titular:</strong> <%= donation.holder %></p>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+
+  <h2 class="h4 text-lb mt-5">Yape y Plin</h2>
+  <div class="row g-3">
+    <% donation.wallets.forEach(function (w) { %>
+      <div class="col-sm-6 col-lg-4">
+        <div class="donation-box p-3 text-center h-100">
+          <h3 class="h5"><%= w.name %></h3>
+          <img class="qr-img" src="<%= w.qr %>" alt="Código QR de <%= w.name %> de la ONG Lágrimas Blancas" loading="lazy">
+          <p class="mt-2 mb-0"><strong><%= w.phone %></strong><br><span class="small">A nombre de <%= donation.holder %></span></p>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+
+  <div class="bg-lb-gray rounded p-4 mt-5">
+    <h2 class="h5 text-lb">¿Ya donaste?</h2>
+    <p class="mb-3">Escríbenos a <a href="mailto:<%= donation.contactEmail %>"><%= donation.contactEmail %></a> con tu comprobante para actualizar el avance de la campaña y enviarte nuestro agradecimiento.</p>
+    <a href="/campanas" class="btn btn-lb">Ver campañas</a>
+    <a href="/voluntariado" class="btn btn-cta">También puedo ser voluntario</a>
+  </div>
+</section>
+<%- include('partials/footer') %>

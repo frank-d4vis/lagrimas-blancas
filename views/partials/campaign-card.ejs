@@ -1,0 +1,18 @@
+<% const p = pct(c.current_amount, c.goal_amount); %>
+<div class="card card-lb">
+  <% if (c.image_url) { %><img src="<%= c.image_url %>" class="card-img-top" alt="Imagen de la campaña <%= c.title %>" loading="lazy"><% } %>
+  <div class="card-body d-flex flex-column">
+    <h3 class="h5 text-lb"><%= c.title %></h3>
+    <p class="preline small flex-grow-1"><%= c.description %></p>
+    <progress class="lb-progress <%= p >= 100 ? 'done' : '' %>" value="<%= p %>" max="100" aria-label="Avance de la campaña: <%= p %>%"><%= p %>%</progress>
+    <div class="d-flex justify-content-between small mt-1">
+      <span><strong><%= money(c.current_amount) %></strong> recaudados</span>
+      <span><strong><%= p %>%</strong> de <%= money(c.goal_amount) %></span>
+    </div>
+    <% if (c.status === 'active') { %>
+      <a href="/donar" class="btn btn-cta mt-3">Donar a esta campaña</a>
+    <% } else { %>
+      <span class="badge bg-secondary mt-3 align-self-start">Campaña completada</span>
+    <% } %>
+  </div>
+</div>

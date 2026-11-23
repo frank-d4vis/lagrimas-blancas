@@ -5,12 +5,17 @@ const admin = require('../controllers/adminController');
 const campaigns = require('../controllers/campaignController');
 const announcements = require('../controllers/announcementController');
 const volunteers = require('../controllers/volunteerController');
-const { campaignRules, announcementRules, volunteerStatusRules } = require('../middlewares/validators');
+const account = require('../controllers/accountController');
+const { campaignRules, announcementRules, volunteerStatusRules, passwordRules } = require('../middlewares/validators');
 
 // Valida que :id sea un entero positivo (si no, 404) antes de tocar la BD.
 router.param('id', (req, res, next, id) => (/^\d{1,9}$/.test(id) && Number(id) > 0 ? next() : next('route')));
 
 router.get('/', wrap(admin.dashboard));
+
+// Cuenta propia: cambio de contraseña
+router.get('/cuenta', account.showForm);
+router.post('/cuenta', passwordRules, wrap(account.changePassword));
 
 // CRUD 1: Campañas
 router.get('/campanas', wrap(campaigns.index));

@@ -8,6 +8,10 @@
       <%- include('partials/errors') %>
       <form method="post" action="/voluntariado" novalidate>
         <%- include('partials/csrf') %>
+        <div class="visually-hidden" aria-hidden="true">
+          <label for="website">No completar este campo</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+        </div>
         <div class="mb-3">
           <label for="full_name" class="form-label">Nombre completo *</label>
           <input type="text" class="form-control" id="full_name" name="full_name" maxlength="120" required autocomplete="name" value="<%= old.full_name || '' %>">

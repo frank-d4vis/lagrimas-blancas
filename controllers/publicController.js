@@ -31,6 +31,11 @@ exports.showVolunteerForm = (req, res) =>
   res.render('volunteer', { title: 'Ser voluntario', errors: [], old: {} });
 
 exports.createVolunteer = async (req, res) => {
+  // Honeypot anti-bots: el campo "website" está oculto; si viene con datos, es un bot. Se descarta en silencio.
+  if (req.body.website) {
+    req.session.flash = { type: 'success', msg: '¡Gracias por postular!' };
+    return req.session.save(() => res.redirect('/voluntariado'));
+  }
   const errs = validationResult(req);
   if (!errs.isEmpty()) {
     return res.status(422).render('volunteer', { title: 'Ser voluntario', errors: errs.array(), old: req.body });

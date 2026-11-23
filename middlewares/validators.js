@@ -39,7 +39,20 @@ const volunteerRules = [
 
 const volunteerStatusRules = [body('status').isIn(VOLUNTEER_STATUS).withMessage('Estado no válido.')];
 
+const passwordRules = [
+  body('current_password').isString().isLength({ min: 1, max: 100 }).withMessage('Ingresa tu contraseña actual.'),
+  body('new_password').isString().isLength({ min: 12 }).withMessage('La nueva contraseña debe tener al menos 12 caracteres.')
+    .custom((v) => Buffer.byteLength(v, 'utf8') <= 72).withMessage('La nueva contraseña es demasiado larga (máximo 72 bytes).')
+    .matches(/[a-z]/).withMessage('Debe incluir al menos una minúscula.')
+    .matches(/[A-Z]/).withMessage('Debe incluir al menos una mayúscula.')
+    .matches(/\d/).withMessage('Debe incluir al menos un número.')
+    .matches(/[^A-Za-z0-9]/).withMessage('Debe incluir al menos un símbolo (ej.: ! # $ %).')
+    .custom((v, { req }) => v !== req.body.current_password).withMessage('La nueva contraseña debe ser distinta de la actual.'),
+  body('confirm_password').custom((v, { req }) => v === req.body.new_password).withMessage('La confirmación no coincide con la nueva contraseña.'),
+];
+
 module.exports = {
+  passwordRules,
   CATEGORIES, CAMPAIGN_STATUS, VOLUNTEER_STATUS,
   loginRules, campaignRules, announcementRules, volunteerRules, volunteerStatusRules,
 };

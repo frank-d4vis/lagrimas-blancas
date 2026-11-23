@@ -6,7 +6,7 @@ const pgSession = require('connect-pg-simple')(session);
 const methodOverride = require('method-override');
 
 const db = require('./config/db');
-const { helmetMiddleware } = require('./middlewares/security');
+const { helmetMiddleware, globalLimiter, extraHeaders, noStore } = require('./middlewares/security');
 const { csrfProtection } = require('./middlewares/csrf');
 const { isAuthenticated, isAdmin } = require('./middlewares/auth');
 
@@ -28,7 +28,11 @@ app.use((req, res, next) => {
 
 // ---- Seguridad: cabeceras HTTP (helmet + CSP que permite el CDN de Bootstrap)
 app.use(helmetMiddleware);
+app.use(extraHeaders);
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: isProd ? '7d' : 0 }));
+
+// Limitador global por IP (después de servir los estáticos)
+app.use(globalLimiter);
 
 // ---- Parsers (límite de tamaño contra payloads abusivos)
 app.use(express.urlencoded({ extended: false, limit: '100kb' }));
@@ -48,11 +52,12 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'solo-para-desarrollo-local',
   resave: false,
   saveUninitialized: false,
+  rolling: true,             // la sesión se renueva con la actividad y expira por inactividad
   cookie: {
     httpOnly: true,          // JS del navegador no puede leer la cookie (mitiga robo por XSS)
     secure: isProd,          // solo HTTPS en producción
     sameSite: 'lax',         // defensa adicional contra CSRF
-    maxAge: 1000 * 60 * 60 * 8,
+    maxAge: 1000 * 60 * 60 * 2, // 2 horas de inactividad
   },
 }));
 
@@ -73,6 +78,9 @@ app.use((req, res, next) => {
 
 // ---- CSRF para todos los POST/PUT/DELETE
 app.use(csrfProtection);
+
+// ---- Login y panel: sin caché y sin indexar
+app.use(['/admin', '/login'], noStore);
 
 // ---- Rutas
 app.use('/', require('./routes/public'));

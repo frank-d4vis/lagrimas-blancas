@@ -1,0 +1,27 @@
+<%- include('../partials/header', { title: 'Mi cuenta' }) %>
+<section class="container py-5">
+  <div class="row justify-content-center"><div class="col-lg-6">
+    <h1 class="h2 section-title">Mi cuenta</h1>
+    <p>Sesión: <strong><%= user.name %></strong> · <%= user.email %> · rol <%= user.role %></p>
+    <h2 class="h5 text-lb">Cambiar contraseña</h2>
+    <p class="small text-muted">Mínimo 12 caracteres, con mayúscula, minúscula, número y símbolo. Al cambiarla se cierran tus otras sesiones.</p>
+    <%- include('../partials/errors') %>
+    <form method="post" action="/admin/cuenta" novalidate>
+      <%- include('../partials/csrf') %>
+      <div class="mb-3">
+        <label for="current_password" class="form-label">Contraseña actual</label>
+        <input type="password" class="form-control" id="current_password" name="current_password" required autocomplete="current-password">
+      </div>
+      <div class="mb-3">
+        <label for="new_password" class="form-label">Nueva contraseña</label>
+        <input type="password" class="form-control" id="new_password" name="new_password" required minlength="12" autocomplete="new-password">
+      </div>
+      <div class="mb-4">
+        <label for="confirm_password" class="form-label">Repite la nueva contraseña</label>
+        <input type="password" class="form-control" id="confirm_password" name="confirm_password" required minlength="12" autocomplete="new-password">
+      </div>
+      <button class="btn btn-lb" type="submit">Actualizar contraseña</button>
+    </form>
+  </div></div>
+</section>
+<%- include('../partials/footer') %>

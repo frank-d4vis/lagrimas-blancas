@@ -45,4 +45,41 @@ const volunteerLimiter = rateLimit({
     res.status(429).render('error', { title: 'Demasiadas solicitudes', status: 429, message: 'Has enviado varias postulaciones seguidas. Inténtalo más tarde.' }),
 });
 
-module.exports = { helmetMiddleware, loginLimiter, volunteerLimiter };
+// Limitador por CUENTA (correo): frena ataques de fuerza bruta distribuidos desde muchas IP.
+const loginAccountLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 8,
+  skipSuccessfulRequests: true,
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req) => 'acct:' + (String((req.body && req.body.email) || '').toLowerCase().slice(0, 150) || 'anon'),
+  handler: (req, res) =>
+    res.status(429).render('error', { title: 'Cuenta bloqueada temporalmente', status: 429, message: 'Demasiados intentos con este correo. Espera 15 minutos.' }),
+});
+
+// Limitador global por IP (anti-flood / scraping agresivo)
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 400,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) =>
+    res.status(429).render('error', { title: 'Demasiadas solicitudes', status: 429, message: 'Has hecho demasiadas solicitudes. Espera unos minutos.' }),
+});
+
+// Cabeceras adicionales: desactiva APIs del navegador que el sitio no usa.
+function extraHeaders(req, res, next) {
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=(), usb=()');
+  res.setHeader('X-Permitted-Cross-Domain-Policies', 'none');
+  next();
+}
+
+// Las páginas de login y administración nunca se guardan en caché ni se indexan.
+function noStore(req, res, next) {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('X-Robots-Tag', 'noindex, nofollow');
+  next();
+}
+
+module.exports = { helmetMiddleware, loginLimiter, loginAccountLimiter, volunteerLimiter, globalLimiter, extraHeaders, noStore };

@@ -18,10 +18,19 @@ function isAdmin(req, res, next) {
   return next(err);
 }
 
+// 3) Solo el superadmin (gestión de cuentas de administradores).
+function isSuperAdmin(req, res, next) {
+  const user = req.session && req.session.user;
+  if (user && user.role === 'superadmin') return next();
+  const err = new Error('Solo el superadministrador puede gestionar cuentas.');
+  err.status = 403;
+  return next(err);
+}
+
 // Evita que un usuario ya logueado vea el formulario de login.
 function redirectIfAuthenticated(req, res, next) {
   if (req.session && req.session.user) return res.redirect('/admin');
   return next();
 }
 
-module.exports = { isAuthenticated, isAdmin, redirectIfAuthenticated };
+module.exports = { isAuthenticated, isAdmin, isSuperAdmin, redirectIfAuthenticated };

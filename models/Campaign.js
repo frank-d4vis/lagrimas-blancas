@@ -17,6 +17,16 @@ exports.findActive = async (limit = null) => {
   return exports.findAll('active');
 };
 
+// Campañas culminadas (evidencias de entrega), las más recientes primero.
+exports.findCompleted = async (limit = null) => {
+  if (limit) {
+    const r = await db.query("SELECT * FROM campaigns WHERE status = 'completed' ORDER BY updated_at DESC LIMIT $1", [limit]);
+    return r.rows;
+  }
+  const r = await db.query("SELECT * FROM campaigns WHERE status = 'completed' ORDER BY updated_at DESC");
+  return r.rows;
+};
+
 exports.findById = async (id) => {
   const r = await db.query('SELECT * FROM campaigns WHERE id = $1', [id]);
   return r.rows[0] || null;

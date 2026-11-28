@@ -1,20 +1,34 @@
 <%- include('partials/header', { title: title }) %>
-<section class="container py-5">
-  <h1 class="h2 section-title"><%= archive ? 'Archivo de campañas completadas' : 'Campañas de ayuda activas' %></h1>
-  <p class="text-muted">
-    <%= archive ? 'Transparencia ante todo: aquí puedes ver las campañas que ya alcanzaron su objetivo gracias a la comunidad.' : 'Elige una campaña y ayúdanos a llegar a la meta. Cada aporte se refleja en la barra de avance.' %>
-  </p>
+<section class="container py-4 py-md-5">
+  <h1 class="h2 section-title"><%= archive ? 'Campañas culminadas · Evidencias de entregas' : 'Campañas activas' %></h1>
   <div class="mb-4 d-flex gap-2 flex-wrap">
-    <a class="btn btn-outline-lb <%= archive ? '' : 'active' %>" href="/campanas">Activas</a>
-    <a class="btn btn-outline-lb <%= archive ? 'active' : '' %>" href="/campanas/archivo">Completadas</a>
+    <a class="btn btn-outline-lb <%= archive ? '' : 'active' %>" href="/campanas">Activas y evidencias</a>
+    <a class="btn btn-outline-lb <%= archive ? 'active' : '' %>" href="/campanas/archivo">Solo evidencias</a>
   </div>
-  <% if (campaigns.length === 0) { %>
-    <div class="alert alert-info">No hay campañas en esta sección por el momento.</div>
+
+  <% if (!archive) { %>
+    <p>Elige una campaña y ayúdanos a llegar a la meta.</p>
+    <% if (active.length === 0) { %>
+      <div class="alert alert-info">No hay campañas activas por el momento.</div>
+    <% } %>
+    <div class="row g-4">
+      <% active.forEach(function (c) { %>
+        <div class="col-12 col-md-6 col-lg-4"><%- include('partials/campaign-card', { c: c }) %></div>
+      <% }) %>
+    </div>
   <% } %>
-  <div class="row g-4">
-    <% campaigns.forEach(function (c) { %>
-      <div class="col-12 col-md-6 col-lg-4"><%- include('partials/campaign-card', { c: c }) %></div>
-    <% }) %>
-  </div>
+
+  <section id="evidencias" class="<%= archive ? '' : 'mt-5 pt-4' %>">
+    <% if (!archive) { %><h2 class="h3 section-title">Campañas culminadas · Evidencias de entregas</h2><% } %>
+    <p>Transparencia ante todo: estas campañas ya cumplieron su objetivo. Aquí están las fotos de las entregas.</p>
+    <% if (completed.length === 0) { %>
+      <div class="alert alert-info">Pronto publicaremos las evidencias de nuestras primeras entregas.</div>
+    <% } %>
+    <div class="row g-4">
+      <% completed.forEach(function (c) { %>
+        <div class="col-12 col-md-6 col-lg-4"><%- include('partials/evidence-card', { c: c }) %></div>
+      <% }) %>
+    </div>
+  </section>
 </section>
 <%- include('partials/footer') %>

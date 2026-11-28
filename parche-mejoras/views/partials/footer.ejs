@@ -1,0 +1,25 @@
+  </main>
+  <footer class="site-footer mt-5 py-4">
+    <div class="container d-flex flex-column flex-md-row justify-content-between gap-2">
+      <div>
+        <strong>ONG Lágrimas Blancas</strong><br>
+        Arequipa, Perú · <a href="mailto:contacto@lagrimasblancas.org">contacto@lagrimasblancas.org</a><br>
+        WhatsApp: <a href="<%= site.whatsappChatUrl %>" target="_blank" rel="noopener noreferrer"><%= site.whatsappDisplay %></a>
+      </div>
+      <div class="small align-self-md-end">
+        Proyecto académico de impacto social. Los datos de voluntarios nunca se muestran públicamente.
+      </div>
+    </div>
+  </footer>
+
+  <% if (!currentPath.startsWith('/admin') && currentPath !== '/login') { %>
+    <a class="wa-float" href="<%= site.whatsappChatUrl %>" target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a la coordinación de la ONG">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 3h16a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/></svg>
+      <span class="wa-label">WhatsApp</span>
+    </a>
+  <% } %>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<%- include('partials/header', { title: 'Donar' }) %>
+<% const acct = donation.mainAccount; const qr = donation.mainQr; %>
+<section class="container py-4 py-md-5">
+  <h1 class="h2 section-title">Dona con confianza</h1>
+  <div class="alert alert-warning" role="alert">
+    Estos son los <strong>únicos canales oficiales</strong>. Verifica que el titular sea
+    <strong><%= donation.holder %></strong> (RUC <%= donation.ruc %>). Nunca pedimos claves ni códigos.
+  </div>
+  <p id="copy-status" class="visually-hidden" aria-live="polite"></p>
+
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="donation-box p-4 h-100">
+        <h2 class="h4 text-lb">Cuenta bancaria oficial</h2>
+        <dl class="mb-3">
+          <dt>Banco</dt><dd><%= acct.bank %> · <%= acct.type %></dd>
+          <dt>Titular</dt><dd><%= donation.holder %></dd>
+          <dt>N.° de cuenta</dt><dd class="account-number"><%= acct.number %></dd>
+        </dl>
+        <button type="button" class="btn btn-lb w-100 mb-3" data-copy="<%= acct.number.replace(/\D/g, '') %>">Copiar número de cuenta</button>
+        <dl class="mb-2">
+          <dt>CCI (otros bancos)</dt><dd class="account-number"><%= acct.cci %></dd>
+        </dl>
+        <button type="button" class="btn btn-outline-lb w-100" data-copy="<%= acct.cci.replace(/\D/g, '') %>">Copiar CCI</button>
+        <p class="small text-muted mt-3 mb-0">Se copia sin guiones, listo para pegar en tu app bancaria.</p>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="donation-box donation-box-main p-4 h-100 text-center">
+        <h2 class="h4 text-magenta">Escanea el QR oficial de <%= qr.name %></h2>
+        <img class="qr-img qr-main" src="<%= qr.qr %>" alt="Código QR oficial de <%= qr.name %> de la ONG Lágrimas Blancas" loading="lazy">
+        <p class="mt-2 mb-0"><strong><%= qr.phone %></strong><br><span class="small">A nombre de <%= donation.holder %></span></p>
+      </div>
+    </div>
+  </div>
+
+  <% if (donation.otherWallets && donation.otherWallets.length) { %>
+    <h2 class="h5 text-lb mt-5">Otras opciones</h2>
+    <div class="row g-3">
+      <% donation.otherWallets.forEach(function (w) { %>
+        <div class="col-sm-6 col-lg-4">
+          <div class="donation-box p-3 text-center">
+            <h3 class="h6"><%= w.name %></h3>
+            <img class="qr-img" src="<%= w.qr %>" alt="Código QR de <%= w.name %> de la ONG Lágrimas Blancas" loading="lazy">
+            <p class="mt-2 mb-0 small"><strong><%= w.phone %></strong></p>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <div class="bg-lb-gray rounded p-4 mt-5">
+    <h2 class="h5 text-lb">¿Ya donaste?</h2>
+    <p class="mb-3">Envía tu comprobante a <a href="mailto:<%= donation.contactEmail %>"><%= donation.contactEmail %></a> o por WhatsApp para actualizar el avance.</p>
+    <a href="<%= site.whatsappChatUrl %>" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">Enviar comprobante por WhatsApp</a>
+    <a href="/campanas#evidencias" class="btn btn-outline-lb">Ver evidencias de entregas</a>
+  </div>
+</section>
+<%- include('partials/footer') %>

@@ -1,0 +1,14 @@
+<article class="card card-lb evidence-card">
+  <% if (c.image_url) { %>
+    <img src="<%= c.image_url %>" class="card-img-top" alt="Evidencia de la entrega de la campaña <%= c.title %>" loading="lazy">
+  <% } else { %>
+    <div class="evidence-placeholder" role="img" aria-label="Fotos de la entrega próximamente">Fotos próximamente</div>
+  <% } %>
+  <div class="card-body">
+    <span class="badge bg-lb-teal mb-2">✔ Entrega cumplida</span>
+    <h3 class="h5 text-lb"><%= c.title %></h3>
+    <p class="small mb-2 preline"><%= c.description.length > 110 ? c.description.slice(0, 110) + '…' : c.description %></p>
+    <p class="mb-1"><strong><%= money(c.current_amount) %></strong> de <%= money(c.goal_amount) %></p>
+    <p class="small text-muted mb-0">Cerrada el <%= fdate(c.updated_at) %></p>
+  </div>
+</article>

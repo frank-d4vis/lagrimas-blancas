@@ -22,7 +22,7 @@ app.disable('x-powered-by');
 
 // Valores por defecto para las vistas (permiten renderizar la página de error aunque falle la sesión/BD)
 app.use((req, res, next) => {
-  res.locals.user = null; res.locals.flash = null; res.locals.currentPath = req.path; res.locals.csrfToken = () => '';
+  res.locals.user = null; res.locals.currentUser = null; res.locals.flash = null; res.locals.currentPath = req.path; res.locals.csrfToken = () => '';
   next();
 });
 
@@ -62,6 +62,7 @@ app.use(session({
 }));
 
 // ---- Variables y helpers disponibles en todas las vistas
+app.locals.site = require('./config/site'); // WhatsApp de coordinación y grupo de acogida
 app.locals.money = (n) => 'S/ ' + Number(n || 0).toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 app.locals.pct = (cur, goal) => (Number(goal) > 0 ? Math.min(100, Math.round((Number(cur) / Number(goal)) * 100)) : 0);
 app.locals.fdate = (d) => new Date(d).toLocaleDateString('es-PE', { day: '2-digit', month: 'long', year: 'numeric' });
@@ -70,6 +71,7 @@ app.locals.statusLabel = (s) => ({ pending: 'Pendiente', contacted: 'Contactado'
 
 app.use((req, res, next) => {
   res.locals.user = (req.session && req.session.user) || null;
+  res.locals.currentUser = res.locals.user; // alias usado en las vistas
   res.locals.currentPath = req.path;
   res.locals.flash = req.session && req.session.flash;
   if (req.session && req.session.flash) delete req.session.flash;

@@ -10,11 +10,14 @@
         <li class="nav-item"><a class="nav-link <%= currentPath.startsWith('/campanas') ? 'active' : '' %>" href="/campanas">Campañas</a></li>
         <li class="nav-item"><a class="nav-link <%= currentPath.startsWith('/comunicados') ? 'active' : '' %>" href="/comunicados">Comunicados</a></li>
         <% if (user) { %>
-          <li class="nav-item"><a class="nav-link <%= currentPath.startsWith('/admin') && currentPath !== '/admin/cuenta' ? 'active' : '' %>" href="/admin">Panel admin</a></li>
+          <li class="nav-item"><a class="nav-link <%= currentPath === '/admin' || (currentPath.startsWith('/admin/') && !currentPath.startsWith('/admin/cuenta') && !currentPath.startsWith('/admin/administradores')) ? 'active' : '' %>" href="/admin">Panel admin</a></li>
+          <% if (currentUser && currentUser.role === 'superadmin') { %>
+            <li class="nav-item"><a class="nav-link <%= currentPath.startsWith('/admin/administradores') ? 'active' : '' %>" href="/admin/administradores">Administradores</a></li>
+          <% } %>
           <li class="nav-item"><a class="nav-link <%= currentPath === '/admin/cuenta' ? 'active' : '' %>" href="/admin/cuenta">Mi cuenta</a></li>
         <% } %>
       </ul>
-      <div class="d-flex flex-wrap gap-2 align-items-center">
+      <div class="nav-actions d-flex flex-wrap gap-2 align-items-center">
         <a class="btn btn-cta btn-sm" href="/donar">Donar</a>
         <a class="btn btn-cta btn-sm" href="/voluntariado">Ser voluntario</a>
         <% if (user) { %>

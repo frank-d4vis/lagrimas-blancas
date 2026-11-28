@@ -6,7 +6,9 @@ const campaigns = require('../controllers/campaignController');
 const announcements = require('../controllers/announcementController');
 const volunteers = require('../controllers/volunteerController');
 const account = require('../controllers/accountController');
-const { campaignRules, announcementRules, volunteerStatusRules, passwordRules } = require('../middlewares/validators');
+const users = require('../controllers/userController');
+const { isSuperAdmin } = require('../middlewares/auth');
+const { campaignRules, announcementRules, volunteerStatusRules, passwordRules, adminCreateRules } = require('../middlewares/validators');
 
 // Valida que :id sea un entero positivo (si no, 404) antes de tocar la BD.
 router.param('id', (req, res, next, id) => (/^\d{1,9}$/.test(id) && Number(id) > 0 ? next() : next('route')));
@@ -16,6 +18,11 @@ router.get('/', wrap(admin.dashboard));
 // Cuenta propia: cambio de contraseña
 router.get('/cuenta', account.showForm);
 router.post('/cuenta', passwordRules, wrap(account.changePassword));
+
+// Administradores de respaldo (solo superadmin)
+router.get('/administradores', isSuperAdmin, wrap(users.index));
+router.get('/administradores/nuevo', isSuperAdmin, users.newForm);
+router.post('/administradores', isSuperAdmin, adminCreateRules, wrap(users.create));
 
 // CRUD 1: Campañas
 router.get('/campanas', wrap(campaigns.index));
